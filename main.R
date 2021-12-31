@@ -1,3 +1,6 @@
+# Author: Chan Min Min
+# Date Created: 31 Dec 2021
+
 library(tableone)
 library(MatchIt)
 library(cobalt)
