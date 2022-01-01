@@ -11,13 +11,13 @@ library(survminer)
 library(mice)
 
 # Flags
-workdir = "C:/Users/idscmm/Downloads/RWDDrugEfficacy/"
+workdir = "D:/nBox/Data_Challenge"
 fmice = 1
 fall = 1
 
 
 # Load Event Data
-Event_duration <- read.csv(paste(workdir,"/Biostats - RWD drug efficacy/Event_duration.csv",sep=""))
+Event_duration <- read.csv(paste(workdir,"/Raw_Data/Event_duration.csv",sep=""))
 colnames(Event_duration) <- c('patient_id', 'label', 'time', 'treatment_variable')
 Event_duration$time <- as.integer(Event_duration$time * 12)
 
