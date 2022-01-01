@@ -2,7 +2,7 @@
 """
 Created on Thu Dec 23 11:21:41 2021
 
-@author: idscmm
+@author: Chan Min Min
 """
 
 import pandas as pd
@@ -10,7 +10,8 @@ import copy
 import numpy as np
 from sklearn.impute import KNNImputer
 
-allvar = 0
+fknn = 1
+allvar = 1
 
 def f_get_Normalization(X, norm_mode):    
     num_Patient, num_Feature = np.shape(X)
@@ -29,8 +30,8 @@ def f_get_Normalization(X, norm_mode):
     
     return X
 
-Patient_characteristics=pd.read_csv(r"C:\Users\idscmm\Downloads\RWDDrugEfficacy\Biostats - RWD drug efficacy\Patient_characteristics.csv")
-Event_duration = pd.read_csv(r"C:\Users\idscmm\Downloads\RWDDrugEfficacy\Biostats - RWD drug efficacy\Event_duration.csv")
+Patient_characteristics=pd.read_csv(r".\Raw_Data\Patient_characteristics.csv")
+Event_duration = pd.read_csv(r".\Raw_Data\Event_duration.csv")
 data = copy.deepcopy(Patient_characteristics)
 
 cat_col = ['treatment_variable', 'sex','other_drugs_1','other_drugs_2', 'other_drugs_3', 'other_drugs_4', 'other_drugs_5',
@@ -63,16 +64,18 @@ cat_col = cat_col[:-2] + list(Diag_Score_1.columns)[:-1] + list(Diag_Score_2.col
 #data.loc[:,cont_col] = f_get_Normalization(np.array(data[cont_col]),'standard')
 
 
-    
-imputer = KNNImputer(n_neighbors=3)
-if allvar == 1:
-    data_complete = imputer.fit_transform(data[cat_col + cont_col])
-    data.loc[:,cat_col + cont_col] = data_complete
-    data.to_csv(r'C:\Users\idscmm\Downloads\RWDDrugEfficacy\Processed_Data\data_knn_allvariables.csv',index=False)
+if fknn == 1:
+    imputer = KNNImputer(n_neighbors=3)
+    if allvar == 1:
+        data_complete = imputer.fit_transform(data[cat_col + cont_col])
+        data.loc[:,cat_col + cont_col] = data_complete
+        data.to_csv(r'.\Processed_Data\data_knn_allvariables.csv',index=False)
+    else:
+        data_complete = imputer.fit_transform(data[cat_col + cont_col[:6]])
+        data.loc[:,cat_col + cont_col[:6]] = data_complete
+        data.to_csv(r'.\Processed_Data\data_knn_4variables.csv',index=False) 
 else:
-    data_complete = imputer.fit_transform(data[cat_col + cont_col[:6]])
-    data.loc[:,cat_col + cont_col[:6]] = data_complete
-    data.to_csv(r'C:\Users\idscmm\Downloads\RWDDrugEfficacy\Processed_Data\data_knn_4variables.csv',index=False)    
+    data.to_csv(r'.\Processed_Data\data_full_unscaled.csv',index=False)
     
     
 
